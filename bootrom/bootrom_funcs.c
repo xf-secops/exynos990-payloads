@@ -4,20 +4,22 @@
 #include <exynos9830.h>
 #include <memory.h>
 
-void unknown_func_lol(uint32_t addr)
+void store_rtc_time_difference(uint32_t addr)
 {
-	writel(readl(IRAM_UNK1), addr); // Isn't this redundant???
-	writel(readl(0x15920090) - readl(IRAM_UNK1), addr); // TODO: find what 0x15920090 is
+    uint32_t base = readl(IRAM_RTCTICK_STORE);
+    uint32_t now  = readl(EXYNOS9830_RTC_CURTICCNT_0);
+
+    writel(now - base, addr);
 }
 
-uint32_t get_bl1_boot_flag(void)
+uint32_t is_secure_boot(void)
 {
-    return ((uint32_t(*)(void))readl(PTR_GRAB_BL1_BOOT_FLAG))();
+    return ((uint32_t(*)(void))readl(PTR_IS_SECUREBOOT))();
 }
 
-void set_status_bit(uint32_t unk1, uint32_t unk2)
+void set_status_bit(uint32_t status_register_sel, uint32_t status_bit)
 {
-    ((void(*)(uint32_t, uint32_t))readl(PTR_SET_STATUS_BIT))(unk1, unk2);
+    ((void(*)(uint32_t, uint32_t))readl(PTR_SET_STATUS_BIT))(status_register_sel, status_bit);
 }
 
 void usb_reinit(uint32_t struct_addr, uint32_t delay, uint32_t speed)
