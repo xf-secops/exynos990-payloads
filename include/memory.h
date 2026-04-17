@@ -6,7 +6,7 @@
 #define writel(v, a) (*(volatile uint32_t *)(uintptr_t)(a) = (v))
 #define readl(a) (*(volatile uint32_t *)(uintptr_t)(a))
 
-// Thank Roger for his Mommy Ortiz Sequence
+// Thank you Roger
 #define SEARCH_PATTERN_ARM(start_addr, end_addr, pat0, pat1)                    \
     ({                                                                          \
         const uint32_t pattern[2] = { (pat0), (pat1) };                         \
